@@ -91,8 +91,6 @@ window.onload = function () {
     }
 
     document.getElementById("btn_op_percent").onclick = () => {
-        console.log(a, b, selectedOperation)
-        
         if (b !== '') {
             if (selectedOperation === 'x' || selectedOperation === '/') {
                 b = (+b / 100).toString()
@@ -100,6 +98,53 @@ window.onload = function () {
                 b = (+a * (+b / 100)).toString()
             }
             calculate()
+        }
+    }
+
+    document.getElementById("btn_op_sqrt").onclick = () => {
+        if (a !== '') {
+            a = Math.sqrt(+a).toString()
+            outputElement.innerHTML = a
+        }
+    }
+
+    document.getElementById("btn_op_square").onclick = () => {
+        if (a !== '') {
+            a = (+a * +a).toString()
+            outputElement.innerHTML = a
+        }
+    }
+
+    document.getElementById("btn_op_factorial").onclick = () => {
+        if (a !== '') {
+            let i = 2
+            let result = 1
+
+            while (i <= +a && result !== Infinity) {
+                result *= i
+                outputElement.innerHTML = result.toString()
+                
+                i++
+            }
+
+            a = result.toString()
+        }
+    }
+
+    document.getElementById("btn_op_triple_zeros").onclick = () => {
+        if (a !== '' && +a !== 0) {
+            a += "000"
+            outputElement.innerHTML = a
+        }
+    }
+
+    document.getElementById("btn_op_moon").onclick = () => {
+        const moon_g = 1.62
+        const moon_r_km = 1737
+
+        if (a !== '') {
+            a = (moon_g * (moon_r_km / (moon_r_km + +a))).toString()
+            outputElement.innerHTML = a
         }
     }
 
