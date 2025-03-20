@@ -1,4 +1,3 @@
-// файл script.js
 window.onload = function () {
     let a = ''
     let b = ''
@@ -11,7 +10,7 @@ window.onload = function () {
     // список объектов кнопок циферблата (id которых начинается с btn_digit_)
     digitButtons = document.querySelectorAll('[id ^= "btn_digit_"]')
 
-    function onDigitButtonClicked(digit) {
+    const onDigitButtonClicked = (digit) => {
         if (!selectedOperation) {
             if ((digit != '.') || (digit == '.' && !a.includes(digit))) {
                 a += digit
@@ -24,44 +23,8 @@ window.onload = function () {
             }
         }
     }
-
-    // устанавка колбек-функций на кнопки циферблата по событию нажатия
-    digitButtons.forEach(button => {
-        button.onclick = function () {
-            const digitValue = button.innerHTML
-            onDigitButtonClicked(digitValue)
-        }
-    });
-
-    // установка колбек-функций для кнопок операций
-    document.getElementById("btn_op_mult").onclick = function () {
-        if (a === '') return
-        selectedOperation = 'x'
-    }
-    document.getElementById("btn_op_plus").onclick = function () {
-        if (a === '') return
-        selectedOperation = '+'
-    }
-    document.getElementById("btn_op_minus").onclick = function () {
-        if (a === '') return
-        selectedOperation = '-'
-    }
-    document.getElementById("btn_op_div").onclick = function () {
-        if (a === '') return
-        selectedOperation = '/'
-    }
-
-    // кнопка очищения
-    document.getElementById("btn_op_clear").onclick = function () {
-        a = ''
-        b = ''
-        selectedOperation = ''
-        expressionResult = ''
-        outputElement.innerHTML = 0
-    }
-
-    // кнопка расчёта результата
-    document.getElementById("btn_op_equal").onclick = function () {
+    
+    const calculate = () => {
         if (a === '' || b === '' || !selectedOperation)
             return
 
@@ -85,4 +48,62 @@ window.onload = function () {
 
         outputElement.innerHTML = a
     }
+
+    // устанавка колбек-функций на кнопки циферблата по событию нажатия
+    digitButtons.forEach(button => {
+        button.onclick = () => onDigitButtonClicked(button.innerHTML)
+    });
+
+    // установка колбек-функций для кнопок операций
+    document.getElementById("btn_op_mult").onclick = () => {
+        if (a === '') return
+        selectedOperation = 'x'
+    }
+    document.getElementById("btn_op_plus").onclick = () => {
+        if (a === '') return
+        selectedOperation = '+'
+    }
+    document.getElementById("btn_op_minus").onclick = () => {
+        if (a === '') return
+        selectedOperation = '-'
+    }
+    document.getElementById("btn_op_div").onclick = () => {
+        if (a === '') return
+        selectedOperation = '/'
+    }
+    document.getElementById("btn_op_sign").onclick = () => {
+        if (b !== '') {
+            b = (-b).toString()
+            outputElement.innerHTML = b
+        }
+
+        if (a !== '') {
+            a = (-a).toString()
+            outputElement.innerHTML = a
+        }
+    }
+    document.getElementById("btn_op_percent").onclick = () => {
+        console.log(a, b, selectedOperation)
+        
+        if (b !== '') {
+            if (selectedOperation === 'x' || selectedOperation === '/') {
+                b = (+b / 100).toString()
+            } else {
+                b = (+a * (+b / 100)).toString()
+            }
+            calculate()
+        }
+    }
+
+    // кнопка очищения
+    document.getElementById("btn_op_clear").onclick = () => {
+        a = ''
+        b = ''
+        selectedOperation = ''
+        expressionResult = ''
+        outputElement.innerHTML = 0
+    }
+
+    // кнопка расчёта результата
+    document.getElementById("btn_op_equal").onclick = calculate;
 };
