@@ -49,6 +49,9 @@ window.onload = function () {
         outputElement.innerHTML = a
     }
 
+    // кнопка расчёта результата
+    document.getElementById("btn_op_equal").onclick = calculate
+
     // устанавка колбек-функций на кнопки циферблата по событию нажатия
     digitButtons.forEach(button => {
         button.onclick = () => onDigitButtonClicked(button.innerHTML)
@@ -59,18 +62,22 @@ window.onload = function () {
         if (a === '') return
         selectedOperation = 'x'
     }
+
     document.getElementById("btn_op_plus").onclick = () => {
         if (a === '') return
         selectedOperation = '+'
     }
+
     document.getElementById("btn_op_minus").onclick = () => {
         if (a === '') return
         selectedOperation = '-'
     }
+
     document.getElementById("btn_op_div").onclick = () => {
         if (a === '') return
         selectedOperation = '/'
     }
+
     document.getElementById("btn_op_sign").onclick = () => {
         if (b !== '') {
             b = (-b).toString()
@@ -82,6 +89,7 @@ window.onload = function () {
             outputElement.innerHTML = a
         }
     }
+
     document.getElementById("btn_op_percent").onclick = () => {
         console.log(a, b, selectedOperation)
         
@@ -103,7 +111,4 @@ window.onload = function () {
         expressionResult = ''
         outputElement.innerHTML = 0
     }
-
-    // кнопка расчёта результата
-    document.getElementById("btn_op_equal").onclick = calculate;
 };
