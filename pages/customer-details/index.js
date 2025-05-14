@@ -1,23 +1,23 @@
 import { MainPage } from "../main/index.js";
-import { CardDetailsComponent } from "../../components/card-details/index.js";
+import { CustomerDetailsComponent } from "../../components/customer-details/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
 
 
-export class CardDetailsPage {
+export class CustomerDetailsPage {
     constructor(parent, data) {
         this.parent = parent;
         this.data = data;
     }
 
     get pageRoot() {
-        return document.getElementById('card-details-page');
+        return document.getElementById('customer-details-page');
     }
 
     get html() {
-        return '<div id="card-details-page"></div>';
+        return '<div id="customer-details-page"></div>';
     }
 
-    clickBack() {
+    clickBackButtonHandler() {
         const mainPage = new MainPage(this.parent);
         mainPage.render();
     }
@@ -28,9 +28,9 @@ export class CardDetailsPage {
 
         const backButton = new BackButtonComponent(this.pageRoot);
         backButton.render();
-        backButton.addListeners(this.clickBack.bind(this));
+        backButton.addListeners(this.clickBackButtonHandler.bind(this));
 
-        const cardDetails = new CardDetailsComponent(this.pageRoot, this.data);
-        cardDetails.render();
+        const customerDetails = new CustomerDetailsComponent(this.pageRoot, this.data);
+        customerDetails.render();
     }
 }

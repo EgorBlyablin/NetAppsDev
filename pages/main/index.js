@@ -1,5 +1,6 @@
-import { CardDetailsPage } from "../card-details/index.js";
-import { CardPreviewComponent } from "../../components/card-preview/index.js";
+import { CustomerPreviewComponent } from "../../components/customer-preview/index.js";
+import { CustomerDetailsPage } from "../customer-details/index.js";
+import { fill } from "../../exercises/1.9.js"
 
 
 export class MainPage {
@@ -7,74 +8,88 @@ export class MainPage {
         this.parent = parent;
     }
 
-    get pageRoot() {
-        return document.getElementById('main-page');
-    }
-        
-    get html() {
-        return `<div id="main-page" class="accordion"></div>`;
-    }
-
-    get data() {
+    get customersData() {
         return [
             {
-                src: "https://alfabank.servicecdn.ru/site-upload/1c/b5/187/D_cc_322x355_2.png",
-                title: "Дебетовая карта Alfa Only Travel",
-                text: "До 10% милями за travel-покупки, до 4% — за другие. Привилегии: страховка, трансферы, бизнес-залы."
+                name: "Энакин",
+                activeDays: [1, 2, 3, 4, 5, 7, 8, 9, 10, 15, 20, 21, 22, 29, 30],
+                creditApprovalFactors: [0.5, 1.2, 3, 0.8, 1.7],
+                transactions: [1200, -300, 140, -3000, 5600, 100, -600]
             },
             {
-                src: "https://alfabank.servicecdn.ru/site-upload/d4/77/187/D_CatalogCard_StickerKids.png",
-                title: "Тонкий Альфа-Стикер",
-                text: "Бесконтактная оплата. 990 ₽ в первый год, затем — бесплатно. Удобно носить под чехлом. Кэшбэк рублями или милями."
+                name: "Заз",
+                activeDays: [2, 3, 4, 5, 6, 26, 27, 28],
+                creditApprovalFactors: [1.1, 0.9, 2.5, 1.3, 0.7],
+                transactions: [500, -200, 300, -1500, 2500, 400, -800]
             },
             {
-                src: "https://alfabank.servicecdn.ru/site-upload/28/8d/187/D_CatalogCard_Sticker.png",
-                title: "Альфа-Стикер (базовый)",
-                text: "590 ₽ в первый год, затем — бесплатно. Кэшбэк рублями или милями. Доступны 4 дизайна на выбор."
+                name: "Палпатин",
+                activeDays: [21, 22, 23, 25, 26, 27],
+                creditApprovalFactors: [0.8, 1.5, 2.0, 1.0, 1.2],
+                transactions: [800, -100, 200, -2500, 3000, 200, -500]
             },
             {
-                src: "https://alfabank.servicecdn.ru/site-upload/b4/67/187/D_CatalogCard_290x290_131124.png",
-                title: "Апельсиновая карта",
-                text: "Кэшбэк 7% в «Пятёрочке» и «Перекрёстке», 1% — в остальных местах (кроме продуктовых). Бесплатная навсегда."
+                name: "Джа-джа",
+                activeDays: [1, 10, 11],
+                creditApprovalFactors: [1.0, 1.3, 0.9, 1.8, 2.2],
+                transactions: [1000, -400, 500, -2000, 4000, 300, -700]
             },
             {
-                src: "https://alfabank.servicecdn.ru/site-upload/2d/0a/187/D_CatalogCard_Aeroflot_290x290.png",
-                title: "Дебетовая карта «Аэрофлот»",
-                text: "До 1,5 миль за каждые 60 ₽. Бесплатный выпуск и обслуживание. Доступ к Альфа-Онлайн."
-            },
-            {
-                src: "https://alfabank.servicecdn.ru/site-upload/5d/e6/187/M_card_short_aero.png",
-                title: "Дебетовая карта Alfa Only Aeroflot",
-                text: "До 2 миль за 60 ₽. Привилегии: страховка, трансферы, бизнес-залы. Бесплатно при выполнении условий."
-            },
-            {
-                src: "https://alfabank.servicecdn.ru/site-upload/1f/0b/9465/image-10.png",
-                title: "Семейная карта",
-                text: "Для родных и близких. Бесплатная доставка и обслуживание. Кэшбэк рублями или милями. Совместный счёт в приложении."
-            },
-            {
-                src: "https://alfabank.servicecdn.ru/site-upload/68/d1/187/D_CatalogCard_Sticker-1.png",
-                title: "Детский стикер",
-                text: "590 ₽ в первый год, затем — бесплатно. Кэшбэк до 100%. Приложение с играми учит обращаться с деньгами."
+                name: "Лея",
+                activeDays: [],
+                creditApprovalFactors: [0.7, 1.4, 1.6, 1.1, 2.0],
+                transactions: [600, -300, 400, -1800, 3500, 500, -900]
             }
         ];
     }
+
+
+    get pageRoot() {
+        return document.getElementById('main-page');
+    }
+
+    get html() {
+        return '<div id="main-page"></div>';
+    }
+
+    renderCustomerDetailsPage(e) {
+        const customerId = +e.currentTarget.dataset.id;
     
-    renderDetaisPage(e) {
-        const cardId = e.target.dataset.id;
-    
-        const cardDetailsPage = new CardDetailsPage(this.parent, this.data[cardId]);
-        cardDetailsPage.render();
+        const customerDetails = new CustomerDetailsPage(
+            this.parent,
+            this.customersData[customerId]
+        );
+        customerDetails.render();
+    }
+
+    renderSkeleton() {
+        this.parent.innerHTML = '';
+        this.parent.insertAdjacentHTML('beforeend', this.html);
+
+        const fakeData = fill(this.customersData.length, { // Создаем массив-заглушку
+            id: NaN,
+            name: 'Загрузка...'
+        });
+        
+        fakeData.forEach(({id, ...data}) => {
+            const customerPreview = new CustomerPreviewComponent(this.parent, id, data);
+            customerPreview.render();
+        });
+    }
+
+    renderReal() {
+        this.parent.innerHTML = '';
+        this.parent.insertAdjacentHTML('beforeend', this.html);
+
+        this.customersData.forEach((data, index) => {
+            const customerPreview = new CustomerPreviewComponent(this.parent, index, data);
+            customerPreview.render();
+            customerPreview.addListener(this.renderCustomerDetailsPage.bind(this))
+        });
     }
 
     render() {
-        this.parent.innerHTML = '';
-        this.parent.insertAdjacentHTML('beforeend', this.html);
-        
-        this.data.forEach((item, index) => {
-            const cardPreview = new CardPreviewComponent(this.pageRoot, {...item, id: index});
-            cardPreview.render();
-            cardPreview.addListener(this.renderDetaisPage.bind(this));
-        });
+        this.renderSkeleton(); // Отрисовываем скелетон
+        setTimeout(() => this.renderReal(), 400); // Отрисовываем реальные данные
     }
 }
