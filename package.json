@@ -1,0 +1,23 @@
+{
+  "name": "simple-web-app",
+  "version": "0.1.0",
+  "description": "A simple web application as a part of RSP course labs",
+  "homepage": "https://github.com/EgorBlyablin/RSP#readme",
+  "bugs": {
+    "url": "https://github.com/EgorBlyablin/RSP/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EgorBlyablin/RSP.git"
+  },
+  "license": "MIT",
+  "author": "Egor Blyablin",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.6"
+  }
+}
