@@ -7,3 +7,19 @@ export const isPalindrom = (data) => {
     // Сравниваем строку с её перевернутой версией
     return strValue === strValue.split('').reverse().join('');
 }
+
+// Второе решение
+// const isPalindrom = (data) => {
+//     const cleanStr = clearValue(data);
+//     let left = 0;
+//     let right = cleanStr.length - 1;
+
+//     while (left < right) {
+//         if (cleanStr[left] !== cleanStr[right]) {
+//             return false;
+//         }
+//         left++;
+//         right--;
+//     }
+//     return true;
+// }
