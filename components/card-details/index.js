@@ -7,7 +7,7 @@ export class CardDetailsComponent { // Компонент страницы ка�
     get html() {
         return (
             `
-                <div class="card mt-2 rounded-4">
+                <div class="card mt-4 p-4 rounded-4">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <img src="${this.data.src}" class="img-fluid" alt="картинка">

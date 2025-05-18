@@ -7,19 +7,18 @@ export class CardPreviewComponent { // Карточка предпросмотр
     get html() {
         return (
             `
-                <div class="card rounded-4 my-4 p-3">
-                    <div class="row g-0">
-                        <div class="col-4 d-flex align-items-center">
-                            <img class="card-img" src="${this.data.src}" alt="картинка">
-                        </div>
-                        <div class="col-8" >
-                            <div class="card-body">
-                                <h5 class="card-title">${this.data.title}</h5>
-                                <p class="card-text">${this.data.text}</p>
-                                <button class="btn btn-primary" id="click-card-${this.data.id}" data-id="${this.data.id}">
-                                    Подробнее
-                                </button>
-                            </div>
+                <div class="col">
+                    <div class="card rounded-4 p-4 h-100">
+                        <img class="card-img flex-grow-1 p-4 object-fit-contain" src="${this.data.src}" alt="картинка"/>
+                        <div class="card-body p-0 flex-grow-0">
+                            <h5 class="card-title">${this.data.title}</h5>
+                            <p class="card-text">${this.data.text}</p>
+                            <button class="btn btn-primary" id="card-details-${this.data.id}" data-id="${this.data.id}">
+                                Подробнее
+                            </button>
+                            <button class="btn btn-secondary" id="card-delete-${this.data.id}" data-id="${this.data.id}">
+                                Удалить
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -27,9 +26,15 @@ export class CardPreviewComponent { // Карточка предпросмотр
         );
     }
 
-    addListener(listener) { // Добавление вызова коллбека при нажатии кнопки
+    addDetailsListener(listener) { // Добавление вызова коллбека при нажатии кнопки "Подробнее"
         document
-            .getElementById(`click-card-${this.data.id}`)
+            .getElementById(`card-details-${this.data.id}`)
+            .addEventListener("click", listener);
+    }
+
+    addDeleteListener(listener) { // Добавление вызова коллбека при нажатии кнопки "Удалить"
+        document
+            .getElementById(`card-delete-${this.data.id}`)
             .addEventListener("click", listener);
     }
 
