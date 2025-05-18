@@ -14,10 +14,8 @@ export const listToIntervals = (numbers) => {
                 intervals.push(`${start}-${end}`);
             }
             // Обновляем начальное и конечное значение для следующего диапазона
-            if (i < numbers.length) {
-                start = numbers[i];
-                end = numbers[i];
-            }
+            start = numbers[i];
+            end = numbers[i];
         }
     }
 
