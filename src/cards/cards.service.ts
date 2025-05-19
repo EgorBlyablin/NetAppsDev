@@ -12,7 +12,10 @@ export class CardsService {
 
   create(createCardDto: CreateCardDto) {
     const cards = this.fileService.read();
-    this.fileService.add({ ...createCardDto, id: cards.length });
+    this.fileService.add({
+      ...createCardDto,
+      id: Math.max(...cards.map((card) => card.id)) + 1,
+    });
   }
 
   findAll(title?: string): Card[] {
