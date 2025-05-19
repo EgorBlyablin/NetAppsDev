@@ -1,12 +1,14 @@
 import { MainPage } from "../main/index.js";
 import { CardDetailsComponent } from "../../components/card-details/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
+import { ajax } from "../../modules/ajax.js";
+import { cardsUrls } from "../../modules/cardsUrls.js";
 
 
 export class CardDetailsPage {
-    constructor(parent, data) {
+    constructor(parent, id) {
         this.parent = parent;
-        this.data = data;
+        this.id = id;
     }
 
     get pageRoot() {
@@ -17,9 +19,16 @@ export class CardDetailsPage {
         return '<div id="card-details-page"></div>';
     }
 
-    clickBack() {
+    renderMainPage() {
         const mainPage = new MainPage(this.parent);
         mainPage.render();
+    }
+
+    loadCard() {
+        ajax.get(cardsUrls.getCardById(this.id), (data) => {
+            const cardDetails = new CardDetailsComponent(this.pageRoot, data);
+            cardDetails.render();
+        })
     }
 
     render() {
@@ -28,9 +37,8 @@ export class CardDetailsPage {
 
         const backButton = new BackButtonComponent(this.pageRoot);
         backButton.render();
-        backButton.addListeners(this.clickBack.bind(this));
+        backButton.addListeners(this.renderMainPage.bind(this));
 
-        const cardDetails = new CardDetailsComponent(this.pageRoot, this.data);
-        cardDetails.render();
+        this.loadCard();
     }
 }

@@ -13,12 +13,17 @@ export class CardPreviewComponent { // Карточка предпросмотр
                         <div class="card-body p-0 flex-grow-0">
                             <h5 class="card-title">${this.data.title}</h5>
                             <p class="card-text">${this.data.text}</p>
-                            <button class="btn btn-primary" id="card-details-${this.data.id}" data-id="${this.data.id}">
-                                Подробнее
-                            </button>
-                            <button class="btn btn-secondary" id="card-delete-${this.data.id}" data-id="${this.data.id}">
-                                Удалить
-                            </button>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="btn btn-primary" id="card-details-${this.data.id}" data-id="${this.data.id}">
+                                    Подробнее
+                                </button>
+                                <button class="btn btn-secondary" id="card-edit-${this.data.id}" data-id="${this.data.id}">
+                                    Изменить
+                                </button>
+                                <button class="btn btn-secondary" id="card-delete-${this.data.id}" data-id="${this.data.id}">
+                                    Удалить
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -29,6 +34,12 @@ export class CardPreviewComponent { // Карточка предпросмотр
     addDetailsListener(listener) { // Добавление вызова коллбека при нажатии кнопки "Подробнее"
         document
             .getElementById(`card-details-${this.data.id}`)
+            .addEventListener("click", listener);
+    }
+
+    addEditListener(listener) { // Добавление вызова коллбека при нажатии кнопки "Изменить"
+        document
+            .getElementById(`card-edit-${this.data.id}`)
             .addEventListener("click", listener);
     }
 
