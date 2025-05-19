@@ -7,8 +7,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Alfa-Bank operations')
-    .setDescription("The Alfa-Bank client's personal operations API")
+    .setTitle('Alfa-Bank cards')
+    .setDescription("The Alfa-Bank client's personal cards API")
     .setVersion('0.1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
