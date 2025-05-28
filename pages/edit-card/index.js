@@ -1,7 +1,7 @@
 import { MainPage } from "../main/index.js"
 import { BackButtonComponent } from "../../components/back-button/index.js";
-import { ajax } from "../../modules/ajax.js";
 import { cardsUrls } from "../../modules/cardsUrls.js";
+import { jsonFetch } from "../../modules/fetch.js";
 
 
 export class EditCardPage {
@@ -42,7 +42,7 @@ export class EditCardPage {
         mainPage.render();
     }
 
-    saveCard() {
+    async saveCard() {
         const data = {
             title: document.getElementById("card-title").value,
             text: document.getElementById("card-text").value,
@@ -50,21 +50,23 @@ export class EditCardPage {
         }
 
         if (this.id) {
-            ajax.patch(cardsUrls.updateCardById(this.id), data, this.renderMainPage.bind(this))
+            await jsonFetch.patch(cardsUrls.updateCardById(this.id), data);
         } else {
-            ajax.post(cardsUrls.createCard(), data, this.renderMainPage.bind(this))
+            await jsonFetch.post(cardsUrls.createCard(), data);
         }
+
+        this.renderMainPage();
     }
 
     renderEditor(data) {
         this.parent.insertAdjacentHTML('beforeend', this.getHtml(data));
-        document.getElementById("edit-card-form").addEventListener("submit", (event) => {
+        document.getElementById("edit-card-form").addEventListener("submit", async (event) => {
             event.preventDefault();
-            this.saveCard();
+            await this.saveCard();
         })
     }
 
-    render() {
+    async render() {
         this.parent.innerHTML = '';
         
         const backButton = new BackButtonComponent(this.parent);
@@ -72,7 +74,9 @@ export class EditCardPage {
         backButton.addListeners(this.renderMainPage.bind(this));
 
         if (this.id) {
-            ajax.get(cardsUrls.getCardById(this.id), (data) => this.renderEditor(data));
+            const repsonse = await fetch(cardsUrls.getCardById(this.id))
+            const data = await repsonse.json()
+            this.renderEditor(data);
         } else {
             this.renderEditor();
         }

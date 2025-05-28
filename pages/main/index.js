@@ -1,8 +1,8 @@
 import { CardDetailsPage } from "../card-details/index.js";
 import { CardPreviewComponent } from "../../components/card-preview/index.js";
-import { ajax } from "../../modules/ajax.js";
 import { cardsUrls } from "../../modules/cardsUrls.js";
 import { EditCardPage } from "../edit-card/index.js";
+import { jsonFetch } from "../../modules/fetch.js";
 
 
 export class MainPage {
@@ -31,29 +31,30 @@ export class MainPage {
         `;
     }
     
-    renderDetailsPage(e) {
+    async renderDetailsPage(e) {
         // Извлекаем ID карты
         const cardId = +e.target.dataset.id;
     
         // Создаем экземпляр страницы деталей карты
         const cardDetailsPage = new CardDetailsPage(this.parent, cardId);
-        cardDetailsPage.render();
+        await cardDetailsPage.render();
     }
 
-    renderEditCardPage(e) {
+    async renderEditCardPage(e) {
         // Извлекаем ID карты
         const cardId = +e.target.dataset.id;
     
         // Создаем экземпляр страницы редактирования карты
         const editCardPage = new EditCardPage(this.parent, cardId)
-        editCardPage.render()
+        await editCardPage.render()
     }
 
-    deleteCard(e) {
+    async deleteCard(e) {
         const cardId = +e.target.dataset.id; // Извлекаем ID карты
     
-        // Удаляем экземпляр карты
-        ajax.delete(cardsUrls.removeCardById(cardId), this.loadCards.bind(this));
+        // Удаляем экземпляр карты и загружаем карточки заново
+        await fetch(cardsUrls.removeCardById(cardId), { method: "DELETE" });
+        await this.loadCards();
     }
 
     renderCardsList(data) {
@@ -69,12 +70,13 @@ export class MainPage {
         });
     }
     
-    loadCards() {
+    async loadCards() {
         const query = document.getElementById("search-input").value.toLowerCase()
 
-        ajax.get(cardsUrls.getCards(query), (data) => {
-            this.renderCardsList(data);
-        })
+        const response = await jsonFetch.get(cardsUrls.getCards(query));
+        const data = await response.json();
+
+        this.renderCardsList(data);
     }
 
     render() {

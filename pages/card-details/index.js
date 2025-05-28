@@ -1,8 +1,8 @@
 import { MainPage } from "../main/index.js";
 import { CardDetailsComponent } from "../../components/card-details/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
-import { ajax } from "../../modules/ajax.js";
 import { cardsUrls } from "../../modules/cardsUrls.js";
+import { jsonFetch } from "../../modules/fetch.js";
 
 
 export class CardDetailsPage {
@@ -24,14 +24,12 @@ export class CardDetailsPage {
         mainPage.render();
     }
 
-    loadCard() {
-        ajax.get(cardsUrls.getCardById(this.id), (data) => {
-            const cardDetails = new CardDetailsComponent(this.pageRoot, data);
-            cardDetails.render();
-        })
+    async getCard() {
+        const response = await jsonFetch.get(cardsUrls.getCardById(this.id))
+        return await response.json()
     }
 
-    render() {
+    async render() {
         this.parent.innerHTML = '';        
         this.parent.insertAdjacentHTML('beforeend', this.html);
 
@@ -39,6 +37,8 @@ export class CardDetailsPage {
         backButton.render();
         backButton.addListeners(this.renderMainPage.bind(this));
 
-        this.loadCard();
+        const data = await this.getCard();
+        const cardDetails = new CardDetailsComponent(this.pageRoot, data);
+        cardDetails.render(data);
     }
 }
